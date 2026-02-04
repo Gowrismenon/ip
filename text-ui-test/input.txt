@@ -1,0 +1,9 @@
+list
+todo my hair
+deadline meeting /by tues 2pm
+event bday party /from 5pm /to 10pm
+mark 2
+todo read
+todo study german
+unmark 2
+bye

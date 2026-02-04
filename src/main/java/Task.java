@@ -7,6 +7,10 @@ public class Task {
         this.isDone = false;
     }
 
+    public boolean isMarked() {
+        return isDone;
+    }
+
     public void finish() {
         this.isDone = true;
     }
