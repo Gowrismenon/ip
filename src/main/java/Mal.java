@@ -1,3 +1,4 @@
+import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
 
@@ -8,6 +9,15 @@ public class Mal {
         Scanner sc = new Scanner(System.in);
 
         ArrayList<Task> list = new ArrayList<>();
+        ArrayList<String> commands = new ArrayList<>(Arrays.asList("list",
+                                                                    "mark <task no.>",
+                                                                    "unmark <task no.>",
+                                                                    "delete <task no.>,",
+                                                                    "todo <taskname>",
+                                                                    "deadline <taskname> / by <deadline>",
+                                                                    "event <taskname> /from <start> /to <end>",
+                                                                    "bye"));
+
 
         String logo = "Mal";
         String line = "_______________________________________________";
@@ -52,18 +62,40 @@ public class Mal {
                         System.out.println("Stop harping on the same old rotten apple!");
                     } else {
                         list.get(idx).finish();
-                        System.out.println("Alright..Now we're getting somewhere!\n" + list.get(idx).toString());
+                        System.out.println("Alright..Now we're getting somewhere!\n" + list.get(idx).toString() +"\n"
+                                            + line);
                     }
                 } else {
                     System.out.println("Maybe you should finish one of the million tasks you have piled on first.");
                 }
-
+            //unmark
             } else if(arr[0].equalsIgnoreCase("unmark")) {
                 int idx = Integer.parseInt(arr[1]) - 1;
                 list.get(idx).reOpen();
                 System.out.println("Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString());
+            } else if(arr[0].equalsIgnoreCase("delete")) {
+                int idx = Integer.parseInt(arr[1]) - 1;
+                if(idx < 0 || idx > list.size()) {
+                    System.out.println("You can't delete what was never added");
+                } else {
+                    Task intermediate = list.get(idx);
+                    if(intermediate.isMarked()) {
+                        System.out.print("Right, that was inevitable\nDeleted:"
+                                        + intermediate
+                                        + "\n"
+                                        + line);
+                    } else {
+                        System.out.print("Deleted:\n"
+                                + intermediate
+                                + "\nLet's call that a strategic decision, hm?\n"
+                                + line);
 
-            } else { // handle input
+                    }
+                    list.remove(idx);
+
+                }
+            }
+            else { // handle input
                 Task curr;
                 try {
                     if (arr.length <= 1) {
@@ -85,12 +117,12 @@ public class Mal {
                         throw new ArrayIndexOutOfBoundsException("Insufficient information");
                         }
                     } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("I have magic, not mind reading abilities. I need details");
+                    System.out.println("Details. I need details. Magic has limits.");
                     continue;
                     }
                     curr = new DeadlineTask(details[0], interm[1]);
 
-                } else {
+                } else if (arr[0].equalsIgnoreCase("Event")){
                     String[] details = arr[1].split("/");
                     String[] interm = details[1].split(" ",2);
                     String[] interm2 = details[2].split(" ",2);
@@ -104,6 +136,13 @@ public class Mal {
                         continue;
                     }
 
+                } else {
+                    System.out.println("Oops you messed up! Let me help" +
+                                        "\nPerhaps you meant:");
+                    for(String elem: commands) {
+                        System.out.println(elem);
+                    }
+                    continue;
                 }
                 list.add(curr);
                 System.out.println(line +
