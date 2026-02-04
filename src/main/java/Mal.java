@@ -57,7 +57,7 @@ public class Mal {
                 //marking
             } else if(arr[0].equalsIgnoreCase("mark")) {//marking and unmarking
                 int idx = Integer.parseInt(arr[1]) - 1;
-                if (0 <= idx && idx < list.size()) {
+                if (0 <= idx && idx <= list.size()) {
                     if(list.get(idx).isMarked()) {
                         System.out.println("Stop harping on the same old rotten apple!");
                     } else {
@@ -71,8 +71,19 @@ public class Mal {
             //unmark
             } else if(arr[0].equalsIgnoreCase("unmark")) {
                 int idx = Integer.parseInt(arr[1]) - 1;
-                list.get(idx).reOpen();
-                System.out.println("Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString());
+                if (0 <= idx && idx <= list.size()) {
+                    if(!list.get(idx).isMarked()) {
+                        System.out.println("you never got to this...." + line);
+                    } else {
+                        list.get(idx).reOpen();
+                        System.out.println("Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString()
+                                            + "\n" + line);
+                    }
+                } else {
+                    System.out.println("Ah yes, task number 'that one'. A classic. Tragically fictional");
+                }
+
+
             } else if(arr[0].equalsIgnoreCase("delete")) {
                 int idx = Integer.parseInt(arr[1]) - 1;
                 if(idx < 0 || idx > list.size()) {
