@@ -1,3 +1,7 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+
 public class DeadlineTask extends Task {
     private String deadline;
 
@@ -15,6 +19,7 @@ public class DeadlineTask extends Task {
     public static Task taskify(String s) {
         String[] details = s.split("/");
         String[] interm = details[1].split(" ",2);
+        //handle inadequate details
         try{
             if (interm.length <= 1) {
                 throw new ArrayIndexOutOfBoundsException("Insufficient information");
@@ -23,7 +28,22 @@ public class DeadlineTask extends Task {
             System.out.println("Details. I need details. Magic has limits.");
 
         }
-        return new DeadlineTask(details[0], interm[1]);
+
+        //handle date input
+        String deadline = interm[1];
+        boolean isDate = true;
+        String dead = "";
+        try{
+            LocalDate d = LocalDate.parse(deadline);
+            dead = d.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
+        } catch(DateTimeParseException e) {
+            isDate = false;
+        }
+        if(isDate) {
+            deadline = dead;
+        }
+        return new DeadlineTask(details[0], deadline);
+
     }
 
     public static Task loadTask(String n) {
