@@ -1,12 +1,20 @@
+import javax.xml.crypto.Data;
+import java.io.FileNotFoundException;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.ArrayList;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
+//basic file stuff done, now need to write the opnening logic,
 
 
 public class Mal {
-
+    private static final String PATH = "./Data/Mal.txt" ;
     public static void main(String[] args) throws MalException{
         Scanner sc = new Scanner(System.in);
+        File file = new File(PATH);
 
         ArrayList<Task> list = new ArrayList<>();
         ArrayList<String> commands = new ArrayList<>(Arrays.asList("list",
@@ -28,6 +36,31 @@ public class Mal {
                             "\nHello I'm " + logo +
                             "\nYou summoned me?\n" +
                             line);
+        if(!file.exists() || file.length() == 0) {
+            System.out.println("Seems like you're starting from scratch!");
+        } else {
+            try (Scanner scan = new Scanner(file)) {
+                while(scan.hasNextLine()) {
+                    String s = scan.nextLine().trim();
+                    if(s.isEmpty()) continue; // skip empty lines
+                    String[] det = s.split("\\|", 2);
+                    if(det.length < 2) continue; // skip malformed lines
+
+                    Task forNow;
+                    if(det[0].equalsIgnoreCase("T")) {
+                        forNow = TodoTask.loadTask(det[1]);
+                    } else if(det[0].equalsIgnoreCase("D")) {
+                        forNow = DeadlineTask.loadTask(det[1]);
+                    } else {
+                        forNow = EventTask.loadTask(det[1]);
+                    }
+                    list.add(forNow);
+                }
+            } catch (FileNotFoundException e) {
+                System.out.println("You gotta give me something to work off of, " +
+                        "I cannot show you a file that doesn't exist!");
+            }
+        }
 
         //input
         while(true) {
@@ -38,6 +71,16 @@ public class Mal {
             //handle bye
             if (input.equalsIgnoreCase("bye")) {
                 System.out.println(line + "\n" + byeMsg + "\n" + line);
+                //write to file
+                try (FileWriter writer = new FileWriter(PATH)) {
+                    for(Task t: list) {
+                        writer.write(t.storeStr());
+                        writer.write(System.lineSeparator());
+                    }
+
+                } catch (IOException e) {
+                    System.out.println("slow your roll! Give me time to communicate the plan");
+                }
                 break;
             }
 
@@ -56,8 +99,15 @@ public class Mal {
                 System.out.println(line);
                 //marking
             } else if(arr[0].equalsIgnoreCase("mark")) {//marking and unmarking
-                int idx = Integer.parseInt(arr[1]) - 1;
-                if (0 <= idx && idx <= list.size()) {
+                int idx = -1;
+                try {
+                    idx = Integer.parseInt(arr[1]) - 1;
+                } catch (NumberFormatException e) {
+                    System.out.println("I don't know all your tasks by name, give me a number!");
+                    continue;
+                }
+
+                if (0 <= idx && idx < list.size()) {
                     if(list.get(idx).isMarked()) {
                         System.out.println("Stop harping on the same old rotten apple!");
                     } else {
@@ -70,8 +120,14 @@ public class Mal {
                 }
             //unmark
             } else if(arr[0].equalsIgnoreCase("unmark")) {
-                int idx = Integer.parseInt(arr[1]) - 1;
-                if (0 <= idx && idx <= list.size()) {
+                int idx = -1;
+                try {
+                    idx = Integer.parseInt(arr[1]) - 1;
+                } catch (NumberFormatException e) {
+                    System.out.println("I don't know all your tasks by name, give me a number!");
+                    continue;
+                }
+                if (0 <= idx && idx < list.size()) {
                     if(!list.get(idx).isMarked()) {
                         System.out.println("you never got to this...." + line);
                     } else {
@@ -86,7 +142,7 @@ public class Mal {
 
             } else if(arr[0].equalsIgnoreCase("delete")) {
                 int idx = Integer.parseInt(arr[1]) - 1;
-                if(idx < 0 || idx > list.size()) {
+                if(idx < 0 || idx >= list.size()) {
                     System.out.println("You can't delete what was never added");
                 } else {
                     Task intermediate = list.get(idx);
@@ -107,6 +163,7 @@ public class Mal {
                 }
             }
             else { // handle input
+                String currS;
                 Task curr;
                 try {
                     if (arr.length <= 1) {
@@ -119,33 +176,15 @@ public class Mal {
                 }
 
                 if (taskType.equalsIgnoreCase("todo")) {
-                    curr = new TodoTask(arr[1]);
+                    curr = TodoTask.taskify(arr[1]);
+                    currS = curr.toString();
                 } else if (taskType.equalsIgnoreCase("deadline")) {
-                    String[] details = arr[1].split("/");
-                    String[] interm = details[1].split(" ",2);
-                    try{
-                        if (interm.length <= 1) {
-                        throw new ArrayIndexOutOfBoundsException("Insufficient information");
-                        }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                    System.out.println("Details. I need details. Magic has limits.");
-                    continue;
-                    }
-                    curr = new DeadlineTask(details[0], interm[1]);
+                    curr = DeadlineTask.taskify(arr[1]);
+                    currS = curr.toString();
 
                 } else if (arr[0].equalsIgnoreCase("Event")){
-                    String[] details = arr[1].split("/");
-                    String[] interm = details[1].split(" ",2);
-                    String[] interm2 = details[2].split(" ",2);
-                    curr = new EventTask(details[0], interm[1], interm2[1]);
-                    try {
-                        if (interm.length <= 1 || interm2.length <= 1) {
-                            throw new ArrayIndexOutOfBoundsException("Insufficient information");
-                        }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        System.out.println("I have magic, not mind reading abilities. I need details");
-                        continue;
-                    }
+                    curr = EventTask.taskify(arr[1]);
+                    currS = curr.toString();
 
                 } else {
                     System.out.println("Oops you messed up! Let me help" +
@@ -163,6 +202,9 @@ public class Mal {
                                     list.size() +
                                     " tasks for world domination\n" +
                                     line);
+
+
+
             }
 
 
