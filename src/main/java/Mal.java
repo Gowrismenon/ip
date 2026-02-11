@@ -14,7 +14,7 @@ public class Mal {
     private static final String PATH = "./Data/Mal.txt" ;
     public static void main(String[] args) throws MalException{
         Scanner sc = new Scanner(System.in);
-        File file = new File(PATH);
+        Storage storage = new Storage(PATH);
 
         ArrayList<Task> list = new ArrayList<>();
         ArrayList<String> commands = new ArrayList<>(Arrays.asList("list",
@@ -36,31 +36,7 @@ public class Mal {
                             "\nHello I'm " + logo +
                             "\nYou summoned me?\n" +
                             line);
-        if(!file.exists() || file.length() == 0) {
-            System.out.println("Seems like you're starting from scratch!");
-        } else {
-            try (Scanner scan = new Scanner(file)) {
-                while(scan.hasNextLine()) {
-                    String s = scan.nextLine().trim();
-                    if(s.isEmpty()) continue; // skip empty lines
-                    String[] det = s.split("\\|", 2);
-                    if(det.length < 2) continue; // skip malformed lines
-
-                    Task forNow;
-                    if(det[0].equalsIgnoreCase("T")) {
-                        forNow = TodoTask.loadTask(det[1]);
-                    } else if(det[0].equalsIgnoreCase("D")) {
-                        forNow = DeadlineTask.loadTask(det[1]);
-                    } else {
-                        forNow = EventTask.loadTask(det[1]);
-                    }
-                    list.add(forNow);
-                }
-            } catch (FileNotFoundException e) {
-                System.out.println("You gotta give me something to work off of, " +
-                        "I cannot show you a file that doesn't exist!");
-            }
-        }
+        list = storage.load();
 
         //input
         while(true) {
@@ -72,15 +48,7 @@ public class Mal {
             if (input.equalsIgnoreCase("bye")) {
                 System.out.println(line + "\n" + byeMsg + "\n" + line);
                 //write to file
-                try (FileWriter writer = new FileWriter(PATH)) {
-                    for(Task t: list) {
-                        writer.write(t.storeStr());
-                        writer.write(System.lineSeparator());
-                    }
-
-                } catch (IOException e) {
-                    System.out.println("slow your roll! Give me time to communicate the plan");
-                }
+                storage.save(list);
                 break;
             }
 
