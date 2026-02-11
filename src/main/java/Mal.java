@@ -76,7 +76,7 @@ public class Mal {
                 try {
                     TL.unmark(arr);
                 } catch (NumberFormatException e) {
-                    System.out.println("I don't know all your tasks by name, give me a number!\n" = line );
+                    System.out.println("I don't know all your tasks by name, give me a number!\n" + line );
                     continue;
                 }
 
@@ -85,26 +85,8 @@ public class Mal {
                 if(arr.length == 1) {
                     System.out.println("Delete what exactly?");
                     continue;
-                }
-                int idx = Integer.parseInt(arr[1]) - 1;
-                if(idx < 0 || idx >= list.size()) {
-                    System.out.println("You can't delete what was never added");
                 } else {
-                    Task intermediate = list.get(idx);
-                    if(intermediate.isMarked()) {
-                        System.out.print("Right, that was inevitable\nDeleted:"
-                                        + intermediate
-                                        + "\n"
-                                        + line);
-                    } else {
-                        System.out.print("Deleted:\n"
-                                + intermediate
-                                + "\nLet's call that a strategic decision, hm?\n"
-                                + line);
-
-                    }
-                    list.remove(idx);
-
+                    TL.delete(arr);
                 }
             }
             else { // handle input

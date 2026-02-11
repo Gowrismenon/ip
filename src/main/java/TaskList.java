@@ -53,4 +53,28 @@ public class TaskList {
             System.out.println("Ah yes, task number 'that one'. A classic. Tragically fictional\n" + LINE);
         }
     }
+
+    public void delete(String[] arr) {
+
+        int idx = Integer.parseInt(arr[1]) - 1;
+        if(idx < 0 || idx >= list.size()) {
+            System.out.println("You can't delete what was never added");
+        } else {
+            Task intermediate = list.get(idx);
+            if(intermediate.isMarked()) {
+                System.out.print("Right, that was inevitable\nDeleted:"
+                        + intermediate
+                        + "\n"
+                        + LINE);
+            } else {
+                System.out.print("Deleted:\n"
+                        + intermediate
+                        + "\nLet's call that a strategic decision, hm?\n"
+                        + LINE);
+
+            }
+            list.remove(idx);
+
+        }
+    }
 }
