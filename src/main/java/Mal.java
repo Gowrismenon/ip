@@ -141,6 +141,10 @@ public class Mal {
 
 
             } else if(arr[0].equalsIgnoreCase("delete")) {
+                if(arr.length == 1) {
+                    System.out.println("Delete what exactly?");
+                    continue;
+                }
                 int idx = Integer.parseInt(arr[1]) - 1;
                 if(idx < 0 || idx >= list.size()) {
                     System.out.println("You can't delete what was never added");
