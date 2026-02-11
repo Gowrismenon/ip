@@ -11,6 +11,8 @@ import java.io.IOException;
 
 
 public class Mal {
+
+
     private static final String PATH = "./Data/Mal.txt" ;
     public static void main(String[] args) throws MalException{
         Scanner sc = new Scanner(System.in);
@@ -36,7 +38,8 @@ public class Mal {
                             "\nHello I'm " + logo +
                             "\nYou summoned me?\n" +
                             line);
-        list = storage.load();
+        TaskList TL = new TaskList(storage.load());
+
 
         //input
         while(true) {
@@ -54,57 +57,27 @@ public class Mal {
 
             //handle list
             if (input.equalsIgnoreCase("list")) {
-                if (!list.isEmpty()) {
-                    System.out.println(line + "\nHere's the master plan, i guess");
-                    for (int i = 0; i < list.size(); i++) {
-                        int index = i + 1;
-                        System.out.println(index + ". " + list.get(i).toString());
-                    }
-                } else {
-                    System.out.println("There is nothing to show, genius. Add some tasks!");
-                }
-
+                TL.list();
                 System.out.println(line);
+
                 //marking
             } else if(arr[0].equalsIgnoreCase("mark")) {//marking and unmarking
-                int idx = -1;
-                try {
-                    idx = Integer.parseInt(arr[1]) - 1;
+                try{
+                    TL.mark(arr);
                 } catch (NumberFormatException e) {
-                    System.out.println("I don't know all your tasks by name, give me a number!");
+                    System.out.println("I don't know all your tasks by name, give me a number!\n" + line);
                     continue;
-                }
-
-                if (0 <= idx && idx < list.size()) {
-                    if(list.get(idx).isMarked()) {
-                        System.out.println("Stop harping on the same old rotten apple!");
-                    } else {
-                        list.get(idx).finish();
-                        System.out.println("Alright..Now we're getting somewhere!\n" + list.get(idx).toString() +"\n"
-                                            + line);
-                    }
-                } else {
-                    System.out.println("Maybe you should finish one of the million tasks you have piled on first.");
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    System.out.println("I'm sorry, task number WHAT?!?!?\n" + line);
+                    continue;
                 }
             //unmark
             } else if(arr[0].equalsIgnoreCase("unmark")) {
-                int idx = -1;
                 try {
-                    idx = Integer.parseInt(arr[1]) - 1;
+                    TL.unmark(arr);
                 } catch (NumberFormatException e) {
-                    System.out.println("I don't know all your tasks by name, give me a number!");
+                    System.out.println("I don't know all your tasks by name, give me a number!\n" = line );
                     continue;
-                }
-                if (0 <= idx && idx < list.size()) {
-                    if(!list.get(idx).isMarked()) {
-                        System.out.println("you never got to this...." + line);
-                    } else {
-                        list.get(idx).reOpen();
-                        System.out.println("Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString()
-                                            + "\n" + line);
-                    }
-                } else {
-                    System.out.println("Ah yes, task number 'that one'. A classic. Tragically fictional");
                 }
 
 
