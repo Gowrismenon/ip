@@ -9,6 +9,10 @@ public class TaskList {
         this.list = list;
     }
 
+    public void add(Task t) {
+        this.list.add(t);
+    }
+
     public void list() {
         if (!this.list.isEmpty()) {
             System.out.println(LINE + "\nHere's the master plan, i guess");
@@ -21,60 +25,58 @@ public class TaskList {
         }
     }
 
-    public void mark(String[] arr) {
-        int idx = -1;
-        idx = Integer.parseInt(arr[1]) - 1;
-
-        if (0 <= idx && idx < list.size()) {
-            if(list.get(idx).isMarked()) {
-                System.out.println("Stop harping on the same old rotten apple!");
-            } else {
-                list.get(idx).finish();
-                System.out.println("Alright..Now we're getting somewhere!\n" + list.get(idx).toString() +"\n"
-                        + LINE);
-            }
+    public void mark(int idx) {
+        if(list.get(idx).isMarked()) {
+            System.out.println("Stop harping on the same old rotten apple!");
         } else {
-            System.out.println("Maybe you should finish one of the million tasks you have piled on first.");
+            list.get(idx).finish();
+            System.out.println("Alright..Now we're getting somewhere!\n" + list.get(idx).toString() +"\n"
+                    + LINE);
+        }
+
+    }
+
+    public void unmark(int idx) {
+        if(!list.get(idx).isMarked()) {
+            System.out.println("you never got to this...." + LINE);
+        } else {
+            list.get(idx).reOpen();
+            System.out.println("Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString()
+                    + "\n" + LINE);
         }
     }
 
-    public void unmark(String[] arr) {
-        int idx = Integer.parseInt(arr[1]) - 1;;
-
-        if (0 <= idx && idx < list.size()) {
-            if(!list.get(idx).isMarked()) {
-                System.out.println("you never got to this...." + LINE);
-            } else {
-                list.get(idx).reOpen();
-                System.out.println("Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString()
-                        + "\n" + LINE);
-            }
+    public void delete(int idx) {
+        Task intermediate = list.get(idx);
+        if(intermediate.isMarked()) {
+            System.out.print("Right, that was inevitable\nDeleted:"
+                    + intermediate
+                    + "\n"
+                    + LINE);
         } else {
-            System.out.println("Ah yes, task number 'that one'. A classic. Tragically fictional\n" + LINE);
+            System.out.print("Deleted:\n"
+                    + intermediate
+                    + "\nLet's call that a strategic decision, hm?\n"
+                    + LINE);
+
         }
+        list.remove(idx);
+
+        }
+
+        public void afterAdd() {
+            int currIdx = list.size() - 1;
+            Task curr = list.get(currIdx);
+            System.out.println(LINE +
+                    "\nAdded:\n" +
+                    curr.toString() +
+                    "\nNow you have " +
+                    list.size() +
+                    " tasks for world domination\n" +
+                   LINE);
     }
 
-    public void delete(String[] arr) {
-
-        int idx = Integer.parseInt(arr[1]) - 1;
-        if(idx < 0 || idx >= list.size()) {
-            System.out.println("You can't delete what was never added");
-        } else {
-            Task intermediate = list.get(idx);
-            if(intermediate.isMarked()) {
-                System.out.print("Right, that was inevitable\nDeleted:"
-                        + intermediate
-                        + "\n"
-                        + LINE);
-            } else {
-                System.out.print("Deleted:\n"
-                        + intermediate
-                        + "\nLet's call that a strategic decision, hm?\n"
-                        + LINE);
-
-            }
-            list.remove(idx);
-
-        }
+    public ArrayList<Task> get() {
+        return this.list;
     }
 }
