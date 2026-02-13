@@ -1,13 +1,12 @@
-import javax.xml.crypto.Data;
-import java.io.FileNotFoundException;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+package Mal.logic;
 
-//basic file stuff done, now need to write the opnening logic,
+import java.util.Arrays;
+import java.util.ArrayList;
+
+import Mal.ui.*;
+import Mal.storage.Storage;
+import Mal.task.Task;
+import Mal.parser.*;
 
 
 public class Mal {
@@ -22,16 +21,15 @@ public class Mal {
         try {
             TL = new TaskList(storage.load());
         } catch (MalException e) {
-            ui.showLoadingError();
             TL = new TaskList(new ArrayList<Task>());
         }
     }
 
     public void run() {
         ArrayList<String> commands = new ArrayList<>(Arrays.asList("list",
-                "mark <task no.>",
-                "unmark <task no.>",
-                "delete <task no.>,",
+                "mark <Mal.task no.>",
+                "unmark <Mal.task no.>",
+                "delete <Mal.task no.>,",
                 "todo <taskname>",
                 "deadline <taskname> / by <deadline>",
                 "event <taskname> /from <start> /to <end>",

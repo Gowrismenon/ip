@@ -1,5 +1,9 @@
+package Mal.ui;
+
 import java.util.Scanner;
 import java.util.ArrayList;
+import Mal.task.*;
+
 
 public class Ui {
     private final static String LINE = "_______________________________________________";

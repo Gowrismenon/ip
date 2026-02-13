@@ -1,3 +1,5 @@
+package Mal.task;
+
 public class TodoTask extends Task {
 
     public TodoTask(String name) {

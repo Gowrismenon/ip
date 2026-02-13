@@ -1,3 +1,9 @@
+package Mal.parser;
+import Mal.logic.*;
+import Mal.task.*;
+import Mal.ui.*;
+
+
 public class Parser {
     private String input;
     private String[] inputDetails;
@@ -35,7 +41,7 @@ public class Parser {
                 } else {
                     idx = Integer.parseInt(this.inputDetails[1]) - 1;
                     if (idx < 0 || idx >= len) {
-                        Ui.showError("Ah yes, task number 'that one'. A classic. Tragically fictional");
+                        Ui.showError("Ah yes, Mal.task number 'that one'. A classic. Tragically fictional");
                     } else {
                         TL.mark(idx);
                     }
@@ -46,9 +52,9 @@ public class Parser {
             case "unmark":
                 idx = Integer.parseInt(this.inputDetails[1]) - 1;
                 if (idx < 0 || idx >= len) {
-                    Ui.showError("Ah yes, task number 'that one'. A classic. Tragically fictional\n");
+                    Ui.showError("Ah yes, Mal.task number 'that one'. A classic. Tragically fictional\n");
                 } else {
-                    TL.mark(idx);
+                    TL.unmark(idx);
                 }
                 isCorrect = true;
                 break;

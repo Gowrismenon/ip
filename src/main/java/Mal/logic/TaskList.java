@@ -1,5 +1,9 @@
-import java.util.AbstractList;
+package Mal.logic;
+
 import java.util.ArrayList;
+
+import Mal.task.*;
+
 
 public class TaskList {
     private ArrayList<Task> list;
@@ -52,12 +56,14 @@ public class TaskList {
             System.out.print("Right, that was inevitable\nDeleted:"
                     + intermediate
                     + "\n"
-                    + LINE);
+                    + LINE
+                    + "\n");
         } else {
             System.out.print("Deleted:\n"
                     + intermediate
                     + "\nLet's call that a strategic decision, hm?\n"
-                    + LINE);
+                    + LINE
+                    + "\n" );
 
         }
         list.remove(idx);
