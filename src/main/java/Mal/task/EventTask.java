@@ -22,6 +22,10 @@ public class EventTask extends Task {
 
     public static Task taskify(String s) {
         String[] details = s.split("/");
+
+        if (details.length < 3) {
+            System.out.println("Right, we have something to do....but we dom't know what and when?");
+        }
         String[] interm = details[1].split(" ",2);
         String[] interm2 = details[2].split(" ",2);
 
@@ -47,7 +51,7 @@ public class EventTask extends Task {
         } catch(DateTimeParseException e) {
             isSDate = false;
         } try {
-            LocalDate d1 = LocalDate.parse(end);
+            LocalDate d1 = LocalDate.parse(end.trim());
             en = d1.format(DateTimeFormatter.ofPattern("MMM d yyyy"));
         } catch (DateTimeParseException e) {
             isEDate = false;

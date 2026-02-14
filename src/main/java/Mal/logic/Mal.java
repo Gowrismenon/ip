@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import Mal.ui.*;
 import Mal.storage.Storage;
-import Mal.task.Task;
+import Mal.task.*;
 import Mal.parser.*;
 
 
