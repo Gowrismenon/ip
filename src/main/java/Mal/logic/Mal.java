@@ -40,55 +40,46 @@ public class Mal {
     }
 
     /**
-     * Starts the main command loop of the application.
-     * Continuously reads user input, deciphers commands using the Parser,
-     * and updates the TaskList and Storage accordingly until the user exits.
+     * consturctor for use by javaFX, to allow use of existing logic
      */
-    public void run() {
-        ArrayList<String> commands = new ArrayList<>(Arrays.asList("list",
-                "mark <Mal.task no.>",
-                "unmark <Mal.task no.>",
-                "find <name>",
-                "delete <Mal.task no.>,",
-                "todo <taskname>",
-                "deadline <taskname> / by <deadline>",
-                "event <taskname> /from <start> /to <end>",
-                "bye"));
-
-        ui.showWelcome();
-        boolean isExit = false;
-        while (!isExit) {
-            String input = ui.readCommand();
-            Parser p = new Parser(input);
-            String command = p.command();
-
-            if (command.equalsIgnoreCase("bye")) {
-                storage.save(taskList.get());
-                ui.showBye();
-                isExit = true;
-            } else {
-                boolean success = p.execute(taskList);
-                if (!success) {
-                    ui.showHelp(commands);
-                } else {
-                    if (command.equalsIgnoreCase("todo")
-                            || command.equalsIgnoreCase("deadline")
-                            || command.equalsIgnoreCase("event")) {
-                        taskList.afterAdd();
-                    }
-                }
-            }
+    public Mal() {
+        ui = new Ui();
+        storage = new Storage(PATH);
+        try {
+            taskList = new TaskList(storage.load());
+        } catch (MalException e) {
+            taskList = new TaskList(new ArrayList<Task>());
         }
+    }
+
+
+    /**
+     * Processes the user input and returns Mal's response.
+     * This replaces the old CLI 'run' loop.
+     */
+    public String getResponse(String input) {
+        Parser p = new Parser(input);
+        String command = p.command();
+
+        if (command.equalsIgnoreCase("bye")) {
+            storage.save(taskList.get());
+            return "Bye. Hope to see you again soon... or whatever.";
+        }
+
+        String response = p.execute(taskList);
+
+        return response;
     }
 
     /**
      * Serves as the main entry point to start the Mal application.
      * @param args Command line arguments (not used).
      * @throws MalException If an error occurs during program initialization.
-     */
+
     public static void main(String[] args) throws MalException {
         new Mal(PATH).run();
     }
+    */
 
 }
 

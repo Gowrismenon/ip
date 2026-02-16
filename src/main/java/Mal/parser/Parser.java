@@ -46,71 +46,70 @@ public class Parser {
      * @param taskList The TaskList object where tasks are managed.
      * @return True if the command was recognized and executed, false otherwise.
      */
-    public boolean execute(TaskList taskList) {
+    public String execute(TaskList taskList) {
         String command = this.command();
-        int len = this.inputDetails.length;
+        int len = taskList.get().size(); // Use actual list size for bounds checking
         int idx;
         Task curr;
-        boolean isCorrect = false;
 
         switch (command.toLowerCase()) {
         case "list":
-            taskList.list();
-            isCorrect = true;
-            break;
+            return taskList.list(); // Assumes list() will return a String soon
+
         case "mark":
             if (this.inputDetails.length <= 1) {
-                break;
-            } else {
-                idx = Integer.parseInt(this.inputDetails[1]) - 1;
-                if (idx < 0 || idx >= len) {
-                    Ui.showError("Ah yes, Mal.task number 'that one'. A classic. Tragically fictional");
-                } else {
-                    taskList.mark(idx);
-                }
-                isCorrect = true;
-                break;
+                return "Give me a number. I'm not a mind reader.";
             }
-        case "unmark":
             idx = Integer.parseInt(this.inputDetails[1]) - 1;
             if (idx < 0 || idx >= len) {
-                Ui.showError("Ah yes, Mal.task number 'that one'. A classic. Tragically fictional\n");
-            } else {
-                taskList.unmark(idx);
+                return "Ah yes, Mal.task number 'that one'. A classic. Tragically fictional";
             }
-            isCorrect = true;
-            break;
-        case "delete":
+            return taskList.mark(idx);
+
+        case "unmark":
+            if (this.inputDetails.length <= 1) {
+                return "Unmark what? I need a number.";
+            }
             idx = Integer.parseInt(this.inputDetails[1]) - 1;
-            if (idx < 0 || idx >= this.inputDetails.length) {
-                Ui.showError("You can't delete what was never added");
-            } else {
-                taskList.delete(idx);
+            if (idx < 0 || idx >= len) {
+                return "Ah yes, Mal.task number 'that one'. A classic. Tragically fictional\n";
             }
-            isCorrect = true;
-            break;
+            return taskList.unmark(idx);
+
+        case "delete":
+            if (this.inputDetails.length <= 1) {
+                return "Delete what? Be specific.";
+            }
+            idx = Integer.parseInt(this.inputDetails[1]) - 1;
+            if (idx < 0 || idx >= len) {
+                return "You can't delete what was never added";
+            }
+            return taskList.delete(idx);
+
         case "todo":
+            if (this.inputDetails.length <= 1) return "A todo needs a description, obviously.";
             curr = TodoTask.taskify(this.inputDetails[1]);
             taskList.add(curr);
-            isCorrect = true;
-            break;
+            return taskList.afterAdd();
+
         case "deadline":
+            if (this.inputDetails.length <= 1) return "Deadlines need a date. Don't be lazy.";
             curr = DeadlineTask.taskify(this.inputDetails[1]);
             taskList.add(curr);
-            isCorrect = true;
-            break;
+            return taskList.afterAdd();
+
         case "event":
+            if (this.inputDetails.length <= 1) return "Events need a time frame.";
             curr = EventTask.taskify(this.inputDetails[1]);
             taskList.add(curr);
-            isCorrect = true;
-            break;
+            return taskList.afterAdd();
+
         case "find":
-            taskList.find(this.inputDetails[1]);
-            isCorrect = true;
+            if (this.inputDetails.length <= 1) return "What am I supposed to find? Thin air?";
+            return taskList.find(this.inputDetails[1]);
+
         default:
-            // Checkstyle requires a default case even if it does nothing
-            break;
+            return "I don't know what that means. Is that an Auradon thing?";
         }
-        return isCorrect;
     }
 }

@@ -29,7 +29,6 @@ public class TaskList {
      * @param t The task to be added.
      */
     public void add(Task t) {
-
         this.list.add(t);
     }
 
@@ -37,16 +36,16 @@ public class TaskList {
      * Prints all tasks currently in the list to the console.
      * If the list is empty, displays a prompt to add tasks.
      */
-    public void list() {
-        if (!this.list.isEmpty()) {
-            System.out.println(LINE + "\nHere's the master plan, i guess");
-            for (int i = 0; i < list.size(); i++) {
-                int index = i + 1;
-                System.out.println(index + ". " + list.get(i).toString());
-            }
-        } else {
-            System.out.println("There is nothing to show, genius. Add some tasks!");
+    public String list() {
+        if (this.list.isEmpty()) {
+            return "There is nothing to show, genius. Add some tasks!";
         }
+
+        StringBuilder sb = new StringBuilder("Here's the master plan, i guess:\n");
+        for (int i = 0; i < list.size(); i++) {
+            sb.append((i + 1)).append(". ").append(list.get(i).toString()).append("\n");
+        }
+        return sb.toString();
     }
 
     /**
@@ -55,15 +54,13 @@ public class TaskList {
      *
      * @param idx The 0-based index of the task in the list.
      */
-    public void mark(int idx) {
+    public String mark(int idx) {
         if (list.get(idx).isMarked()) {
-            System.out.println("Stop harping on the same old rotten apple!");
+            return "Stop harping on the same old rotten apple!";
         } else {
             list.get(idx).finish();
-            System.out.println("Alright..Now we're getting somewhere!\n" + list.get(idx).toString() + "\n"
-                    + LINE);
+            return "Alright..Now we're getting somewhere!\n" + list.get(idx).toString();
         }
-
     }
 
     /**
@@ -71,13 +68,12 @@ public class TaskList {
      *
      * @param idx The 0-based index of the task in the list.
      */
-    public void unmark(int idx) {
+    public String unmark(int idx) {
         if (!list.get(idx).isMarked()) {
-            System.out.println("you never got to this...." + LINE);
+            return "You never got to this....";
         } else {
             list.get(idx).reOpen();
-            System.out.println("Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString()
-                    + "\n" + LINE);
+            return "Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString();
         }
     }
 
@@ -87,41 +83,32 @@ public class TaskList {
      *
      * @param idx The 0-based index of the task to be removed.
      */
-    public void delete(int idx) {
+    public String delete(int idx) {
         Task intermediate = list.get(idx);
+        String response;
         if (intermediate.isMarked()) {
-            System.out.print("Right, that was inevitable\nDeleted:"
-                    + intermediate
-                    + "\n"
-                    + LINE
-                    + "\n");
+            response = "Right, that was inevitable\nDeleted: " + intermediate;
         } else {
-            System.out.print("Deleted:\n"
-                    + intermediate
-                    + "\nLet's call that a strategic decision, hm?\n"
-                    + LINE
-                    + "\n");
-
+            response = "Deleted:\n" + intermediate + "\nLet's call that a strategic decision, hm?";
         }
         list.remove(idx);
-
+        return response;
     }
      /**
      * Displays a summary message after a task has been successfully added.
      * Includes the current task count for the user.
      */
 
-     public void afterAdd() {
+     public String afterAdd() {
          int currIdx = list.size() - 1;
          Task curr = list.get(currIdx);
-         System.out.println(LINE
-                 + "\nAdded:\n"
+
+         return "Added:\n"
                  + curr.toString()
                  + "\nNow you have "
                  + list.size()
-                 + " tasks for world domination\n"
-                 + LINE);
-    }
+                 + " tasks for world domination";
+     }
 
     /**
      * Returns the underlying ArrayList containing the tasks.
@@ -137,7 +124,8 @@ public class TaskList {
      * finds and returns a filtered list of tasks with the keyword
      * @param name This is the keyword to search by
      */
-    public void find(String name) {
+    public String find(String name) {
+        StringBuilder sb = new StringBuilder("Here is what you want:\n");
         ArrayList<Task> result = new ArrayList<>();
         String searchKey = name.toLowerCase();
 
@@ -147,16 +135,13 @@ public class TaskList {
             }
         }
 
-        System.out.println(LINE + "\nHere is what you want:");
-
         if (result.isEmpty()) {
-            System.out.println("Nothing found. My archives are incomplete.");
+            return "Nothing found. My archives are incomplete.";
         } else {
             for (int i = 0; i < result.size(); i++) {
-                int idx = i + 1;
-                System.out.println(idx + ". " + result.get(i).toString());
+                sb.append((i + 1)).append(". ").append(result.get(i).toString()).append("\n");
             }
+            return sb.toString();
         }
-        System.out.println(LINE);
     }
 }
