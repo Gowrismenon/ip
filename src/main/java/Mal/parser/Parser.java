@@ -19,8 +19,10 @@ public class Parser {
      * @param input The full line of text entered by the user.
      */
     public Parser(String input) {
+        assert input != null : "Parser initialized with null input";
         this.input = input;
         this.inputDetails = input.split(" ", 2);
+        assert this.inputDetails.length > 0 : "inputDetails array is unexpectedly empty";
         this.isOneWord = false;
     }
 
@@ -31,6 +33,7 @@ public class Parser {
      * @return The first word of the user input in string format.
      */
     public String command() {
+        assert this.inputDetails != null : "inputDetails is null when calling command()";
         String command = this.inputDetails[0];
         if (inputDetails.length <= 1) {
             this.isOneWord = true;
@@ -88,6 +91,7 @@ public class Parser {
 
         case "todo":
             if (this.inputDetails.length <= 1) return "A todo needs a description, obviously.";
+            assert this.inputDetails.length == 2 : "inputDetails expected to have 2 parts for 'todo'";
             curr = TodoTask.taskify(this.inputDetails[1]);
             taskList.add(curr);
             return taskList.afterAdd();

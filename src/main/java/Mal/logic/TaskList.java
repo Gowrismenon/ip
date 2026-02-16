@@ -55,6 +55,7 @@ public class TaskList {
      * @param idx The 0-based index of the task in the list.
      */
     public String mark(int idx) {
+        assert idx >= 0 && idx < list.size() : "Invalid index passed to delete: " + idx;
         if (list.get(idx).isMarked()) {
             return "Stop harping on the same old rotten apple!";
         } else {
@@ -69,6 +70,7 @@ public class TaskList {
      * @param idx The 0-based index of the task in the list.
      */
     public String unmark(int idx) {
+        assert idx >= 0 && idx < list.size() : "Invalid index passed to delete: " + idx;
         if (!list.get(idx).isMarked()) {
             return "You never got to this....";
         } else {
@@ -84,6 +86,7 @@ public class TaskList {
      * @param idx The 0-based index of the task to be removed.
      */
     public String delete(int idx) {
+        assert idx >= 0 && idx < list.size() : "Invalid index passed to delete: " + idx;
         Task intermediate = list.get(idx);
         String response;
         if (intermediate.isMarked()) {

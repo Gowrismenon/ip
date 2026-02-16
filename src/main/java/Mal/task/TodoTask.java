@@ -10,7 +10,9 @@ public class TodoTask extends Task {
      * @param name String
      */
     public TodoTask(String name) {
+
         super(name);
+        assert name != null : "TodoTask name cannot be null";
     }
 
     /**
@@ -20,6 +22,7 @@ public class TodoTask extends Task {
      */
     public TodoTask(String name, boolean isDone) {
         super(name, isDone);
+        assert name != null : "TodoTask name cannot be null";
 
     }
 
@@ -29,7 +32,9 @@ public class TodoTask extends Task {
      * @return Task This is the task with the details of the Sting
      */
     public static Task taskify(String s) {
+        assert s != null : "taskify received null string for Todo";
         return new TodoTask(s);
+
     }
 
     /**
@@ -38,6 +43,7 @@ public class TodoTask extends Task {
      * @return Task with the details
      */
     public static Task loadTask(String n) {
+        assert n != null : "loadTask received null storage string";
         String[] arr = n.split("\\|");
         if (arr[0].equals("1")) {
             return new TodoTask(arr[1], true);
@@ -52,6 +58,7 @@ public class TodoTask extends Task {
      */
     @Override
     public String storeStr() {
+        assert this.getName() != null : "Task name is null during save";
         if (this.isMarked()) {
             return "T|1|" + this.getName();
         } else {

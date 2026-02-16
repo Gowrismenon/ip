@@ -21,7 +21,7 @@ public class Storage {
      * @param filePath String This is the path to the file to store tasks
      */
     public Storage(String filePath) {
-
+        assert filePath != null && !filePath.trim().isEmpty() : "Storage initialized with invalid filePath";
         this.filePath = filePath;
     }
 
@@ -47,6 +47,7 @@ public class Storage {
                         continue;
                     }
                     String[] det = s.split("\\|", 2);
+                    assert det.length >= 2 : "Malformed line in storage file: " + s;
                     if (det.length < 2) {
                         continue;
                     }
@@ -66,6 +67,7 @@ public class Storage {
                         + "I cannot show you a file that doesn't exist!");
             }
         }
+        assert list != null : "Storage.load() is returning a null list";
         return list;
     }
 
@@ -75,6 +77,7 @@ public class Storage {
      */
     public void save(ArrayList<Task> list) {
         File file = new File(this.filePath);
+        assert file.exists() : "File was not created successfully after save()";
 
         File parentDir = file.getParentFile();
         if(parentDir != null && !parentDir.exists()) {

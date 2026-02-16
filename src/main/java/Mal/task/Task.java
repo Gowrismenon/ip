@@ -16,6 +16,8 @@ public abstract class Task {
     public Task(String name) {
         this.name = name;
         this.isDone = false;
+        assert name != null : "Task name cannot be null during initialization";
+        assert !name.trim().isEmpty() : "Task name cannot be empty or only whitespace";
     }
 
     /**
@@ -28,6 +30,8 @@ public abstract class Task {
     public Task(String name, boolean isDone) {
         this.name = name;
         this.isDone = isDone;
+        assert name != null : "Task name cannot be null during initialization";
+        assert !name.trim().isEmpty() : "Task name cannot be empty or only whitespace";
     }
 
     /**
@@ -56,6 +60,7 @@ public abstract class Task {
     public void finish() {
 
         this.isDone = true;
+        assert this.isDone : "Failed to mark task as done";
     }
 
     /**
@@ -71,6 +76,7 @@ public abstract class Task {
     public void reOpen() {
 
         this.isDone = false;
+        assert !this.isDone : "Failed to re-open task";
     }
 
     /**

@@ -50,6 +50,9 @@ public class Mal {
         } catch (MalException e) {
             taskList = new TaskList(new ArrayList<Task>());
         }
+        assert ui != null : "UI component failed to initialize";
+        assert storage != null : "Storage component failed to initialize";
+        assert taskList != null : "TaskList failed to initialize";
     }
 
 
@@ -67,19 +70,10 @@ public class Mal {
         }
 
         String response = p.execute(taskList);
-
+        assert response != null : "Parser returned a null response";
         return response;
     }
 
-    /**
-     * Serves as the main entry point to start the Mal application.
-     * @param args Command line arguments (not used).
-     * @throws MalException If an error occurs during program initialization.
-
-    public static void main(String[] args) throws MalException {
-        new Mal(PATH).run();
-    }
-    */
 
 }
 
