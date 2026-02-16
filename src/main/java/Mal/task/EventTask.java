@@ -21,6 +21,9 @@ public class EventTask extends Task {
      */
     public EventTask(String name, String start, String end) {
         super(name);
+        assert name != null : "Task name cannot be null";
+        assert start != null : "Start time cannot be null";
+        assert end != null : "End time cannot be null";
         this.start = start;
         this.end = end;
     }
@@ -36,6 +39,9 @@ public class EventTask extends Task {
      */
     public EventTask(String name, boolean isDone, String start, String end) {
         super(name, isDone);
+        assert name != null : "Task name cannot be null";
+        assert start != null : "Start time cannot be null";
+        assert end != null : "End time cannot be null";
         this.start = start;
         this.end = end;
     }
@@ -48,6 +54,7 @@ public class EventTask extends Task {
      * @return A new EventTask object.
      */
     public static Task taskify(String s) {
+        assert s != null : "Input string to taskify cannot be null";
         String[] details = s.split("/");
 
         if (details.length < 3) {
@@ -101,6 +108,7 @@ public class EventTask extends Task {
      * @return An EventTask with the saved state and time details.
      */
     public static Task loadTask(String n) {
+        assert n != null : "Storage string to loadTask cannot be null";
         String[] arr = n.split("\\|");
         if (arr[0].equals("1")) {
             return new EventTask(arr[1], true, arr[2], arr[3]);
@@ -117,6 +125,9 @@ public class EventTask extends Task {
      */
     @Override
     public String storeStr() {
+        assert this.getName() != null : "Task name is null during save";
+        assert this.start != null : "Start time is null during save";
+        assert this.end != null : "End time is null during save";
         if (this.isMarked()) {
             return "E|1|" + this.getName() + "|" + this.start + "|" + this.end;
         } else {

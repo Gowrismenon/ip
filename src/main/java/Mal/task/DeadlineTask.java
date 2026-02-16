@@ -18,6 +18,8 @@ public class DeadlineTask extends Task {
      */
     public DeadlineTask(String name, String deadline) {
         super(name);
+        assert name != null : "Task name cannot be null";
+        assert deadline != null : "Deadline string cannot be null";
         this.deadline = deadline;
     }
 
@@ -31,6 +33,8 @@ public class DeadlineTask extends Task {
      */
     public DeadlineTask(String name, boolean isDone, String deadline) {
         super(name, isDone);
+        assert name != null : "Task name cannot be null";
+        assert deadline != null : "Deadline string cannot be null";
         this.deadline = deadline;
     }
 
@@ -43,6 +47,8 @@ public class DeadlineTask extends Task {
      * @return A new DeadlineTask object.
      */
     public static Task taskify(String s) {
+        assert s != null : "Input string to taskify cannot be null";
+
         String[] details = s.split("/");
         String[] interm = details[1].split(" ", 2);
         //handle inadequate details
@@ -79,6 +85,7 @@ public class DeadlineTask extends Task {
      * @return A DeadlineTask with the saved state and deadline.
      */
     public static Task loadTask(String n) {
+        assert n != null : "Storage string to loadTask cannot be null";
         String[] arr = n.split("\\|");
         if (arr[0].equals("1")) {
             return new DeadlineTask(arr[1], true, arr[2]);
