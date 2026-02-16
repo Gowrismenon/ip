@@ -2,78 +2,76 @@ package Mal.ui;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
-import Mal.task.*;
+import Mal.task.Task;
 
 /**
- * The Ui class deals with interactions with the user,
- *
+ * Handles interactions with the user, primarily managing input and output formatting.
  */
-
 public class Ui {
-    private final static String LINE = "_______________________________________________";
-    private Scanner sc = new Scanner(System.in);
+    private static final String LINE = "_______________________________________________";
+    private static final String WELCOME_MESSAGE = "Hello I'm Mal\nYou summoned me?";
+    private static final String EXIT_MESSAGE = "Finally. I thought you'd never stop talking. Stay rotten.";
 
-    /**
-     * Reads every line of input
-     * @return String. This returns next line of input as a String
-     */
-    public String readCommand() {
-        return sc.nextLine();
+    private final Scanner scanner;
+
+    public Ui() {
+        this.scanner = new Scanner(System.in);
     }
 
     /**
-     * Print out line breaker in between responses
+     * Reads the next line of input from the user.
+     * @return String of user input.
      */
+    public String readCommand() {
+        return scanner.nextLine();
+    }
+
     public void showLine() {
         System.out.println(LINE);
     }
 
-    /**
-     * prints the welcome message
-     */
     public void showWelcome() {
-
-        System.out.println(LINE + "\nHello I'm Mal\nYou summoned me?\n" + LINE);
+        printWithLines(WELCOME_MESSAGE);
     }
 
-    /**
-     * Prints out the message after a task a=has been added
-     * @param t This is that task that has been added
-     * @param size This is the size of the list
-     */
-    public void showAdded(Task t, int size) {
-        System.out.println(LINE + "\nAdded:\n" + t + "\nNow you have " + size + " tasks for world domination\n" + LINE);
+    public void showAdded(Task task, int size) {
+        String message = "Added:\n" + task
+                + "\nNow you have " + size + " tasks for world domination";
+        printWithLines(message);
     }
 
-    /**
-     * prints out the bye message
-     */
     public void showBye() {
-        System.out.println(LINE + "\nFinally. I thought you'd never stop talking. Stay rotten.\n" + LINE);
+        printWithLines(EXIT_MESSAGE);
     }
 
-    /**
-     * Prints out the error message
-     * @param msg this is the error message to be shown
-     */
     public static void showError(String msg) {
-
-        System.out.println(LINE + "\n" + msg + "\n" + LINE);
+        printWithLines(msg);
     }
 
-    /**
-     * Prints out the commands to the user in case they are not aware of the syntax
-     * @param commands The list of commands as String
-     */
     public void showHelp(ArrayList<String> commands) {
+        if (commands == null || commands.isEmpty()) {
+            return;
+        }
+
         System.out.println("Oops you messed up! Let me help\nPerhaps you meant:");
-        for (String c : commands) {
-            System.out.println(c);
+        for (String command : commands) {
+            System.out.println(command);
         }
     }
 
     public void showLoadingError() {
-        System.out.println("LOADING ERROR");
+        printWithLines("LOADING ERROR: The archives are incomplete.");
+    }
+
+    // --- Private Helper Methods (SLAP Improvements) ---
+
+    /**
+     * Helper method to wrap a message in horizontal lines.
+     * This ensures consistent formatting across all UI outputs.
+     */
+    private static void printWithLines(String message) {
+        System.out.println(LINE);
+        System.out.println(message);
+        System.out.println(LINE);
     }
 }
