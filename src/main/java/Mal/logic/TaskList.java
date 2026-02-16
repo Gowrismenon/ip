@@ -1,16 +1,13 @@
 package Mal.logic;
 
 import java.util.ArrayList;
-
-import Mal.task.*;
+import Mal.task.Task;
 
 /**
  * Manages the in-memory list of tasks.
  * Provides methods to add, delete, mark, and display tasks within the collection.
  */
-
 public class TaskList {
-    private static final String LINE = "_______________________________________________";
     private ArrayList<Task> list;
 
     /**
@@ -19,22 +16,17 @@ public class TaskList {
      * @param list An ArrayList of Task objects.
      */
     public TaskList(ArrayList<Task> list) {
-
+        assert list != null : "TaskList cannot be initialized with a null list";
         this.list = list;
     }
 
-    /**
-     * Adds a task to the list.
-     *
-     * @param t The task to be added.
-     */
     public void add(Task t) {
+        assert t != null : "Cannot add a null task to the list";
         this.list.add(t);
     }
 
     /**
-     * Prints all tasks currently in the list to the console.
-     * If the list is empty, displays a prompt to add tasks.
+     * Returns all tasks currently in the list as a formatted string.
      */
     public String list() {
         if (this.list.isEmpty()) {
@@ -42,109 +34,101 @@ public class TaskList {
         }
 
         StringBuilder sb = new StringBuilder("Here's the master plan, i guess:\n");
-        for (int i = 0; i < list.size(); i++) {
-            sb.append((i + 1)).append(". ").append(list.get(i).toString()).append("\n");
-        }
-        return sb.toString();
+        return buildTaskString(sb, this.list);
     }
 
-    /**
-     * Marks a specific task as completed based on its index.
-     * If the task is already marked, provides feedback to the user.
-     *
-     * @param idx The 0-based index of the task in the list.
-     */
     public String mark(int idx) {
-        assert idx >= 0 && idx < list.size() : "Invalid index passed to delete: " + idx;
-        if (list.get(idx).isMarked()) {
+        validateIndex(idx);
+        Task task = list.get(idx);
+
+        // Guard clause: handle the "unhappy" state first
+        if (task.isMarked()) {
             return "Stop harping on the same old rotten apple!";
-        } else {
-            list.get(idx).finish();
-            return "Alright..Now we're getting somewhere!\n" + list.get(idx).toString();
         }
+
+        task.finish();
+        return "Alright..Now we're getting somewhere!\n" + task.toString();
     }
 
-    /**
-     * Reopens a specific task by marking it as not completed.
-     *
-     * @param idx The 0-based index of the task in the list.
-     */
     public String unmark(int idx) {
-        assert idx >= 0 && idx < list.size() : "Invalid index passed to delete: " + idx;
-        if (!list.get(idx).isMarked()) {
+        validateIndex(idx);
+        Task task = list.get(idx);
+
+        // Guard clause: handle the "unhappy" state first
+        if (!task.isMarked()) {
             return "You never got to this....";
-        } else {
-            list.get(idx).reOpen();
-            return "Oh boohoo, we're reopening old wounds\n" + list.get(idx).toString();
         }
+
+        task.reOpen();
+        return "Oh boohoo, we're reopening old wounds\n" + task.toString();
     }
 
-    /**
-     * Removes a task from the list based on its index.
-     * Displays a confirmation message reflecting the task's completion status.
-     *
-     * @param idx The 0-based index of the task to be removed.
-     */
     public String delete(int idx) {
-        assert idx >= 0 && idx < list.size() : "Invalid index passed to delete: " + idx;
-        Task intermediate = list.get(idx);
-        String response;
-        if (intermediate.isMarked()) {
-            response = "Right, that was inevitable\nDeleted: " + intermediate;
-        } else {
-            response = "Deleted:\n" + intermediate + "\nLet's call that a strategic decision, hm?";
-        }
+        validateIndex(idx);
+        Task taskToDelete = list.get(idx);
+
+        String response = getDeleteMessage(taskToDelete);
         list.remove(idx);
+
         return response;
     }
-     /**
-     * Displays a summary message after a task has been successfully added.
-     * Includes the current task count for the user.
-     */
 
-     public String afterAdd() {
-         int currIdx = list.size() - 1;
-         Task curr = list.get(currIdx);
+    public String afterAdd() {
+        assert !list.isEmpty() : "afterAdd called on an empty list";
+        Task lastTask = list.get(list.size() - 1);
 
-         return "Added:\n"
-                 + curr.toString()
-                 + "\nNow you have "
-                 + list.size()
-                 + " tasks for world domination";
-     }
+        return "Added:\n"
+                + lastTask.toString()
+                + "\nNow you have "
+                + list.size()
+                + " tasks for world domination";
+    }
 
-    /**
-     * Returns the underlying ArrayList containing the tasks.
-     * Primarily used for data persistence and storage.
-     *
-     * @return The internal ArrayList of Task objects.
-     */
     public ArrayList<Task> get() {
         return this.list;
     }
 
-    /**
-     * finds and returns a filtered list of tasks with the keyword
-     * @param name This is the keyword to search by
-     */
     public String find(String name) {
+        assert name != null : "Search keyword cannot be null";
+        ArrayList<Task> filteredResults = filterTasksByName(name);
+
+        if (filteredResults.isEmpty()) {
+            return "Nothing found. My archives are incomplete.";
+        }
+
         StringBuilder sb = new StringBuilder("Here is what you want:\n");
-        ArrayList<Task> result = new ArrayList<>();
+        return buildTaskString(sb, filteredResults);
+    }
+
+    // --- Private Helper Methods (SLAP Improvements) ---
+
+    private void validateIndex(int idx) {
+        assert idx >= 0 && idx < list.size() : "Index out of bounds: " + idx;
+    }
+
+    private String getDeleteMessage(Task task) {
+        if (task.isMarked()) {
+            return "Right, that was inevitable\nDeleted: " + task;
+        }
+        return "Deleted:\n" + task + "\nLet's call that a strategic decision, hm?";
+    }
+
+    private ArrayList<Task> filterTasksByName(String name) {
+        ArrayList<Task> results = new ArrayList<>();
         String searchKey = name.toLowerCase();
 
         for (Task t : this.list) {
             if (t.getName().toLowerCase().contains(searchKey)) {
-                result.add(t);
+                results.add(t);
             }
         }
+        return results;
+    }
 
-        if (result.isEmpty()) {
-            return "Nothing found. My archives are incomplete.";
-        } else {
-            for (int i = 0; i < result.size(); i++) {
-                sb.append((i + 1)).append(". ").append(result.get(i).toString()).append("\n");
-            }
-            return sb.toString();
+    private String buildTaskString(StringBuilder sb, ArrayList<Task> tasksToFormat) {
+        for (int i = 0; i < tasksToFormat.size(); i++) {
+            sb.append((i + 1)).append(". ").append(tasksToFormat.get(i).toString()).append("\n");
         }
+        return sb.toString();
     }
 }

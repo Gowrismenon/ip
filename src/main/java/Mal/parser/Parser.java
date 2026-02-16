@@ -1,7 +1,7 @@
 package Mal.parser;
+
 import Mal.logic.*;
 import Mal.task.*;
-import Mal.ui.Ui;
 
 /**
  * Deciphers user input and executes the corresponding commands.
@@ -12,12 +12,6 @@ public class Parser {
     private String[] inputDetails;
     private boolean isOneWord;
 
-    /**
-     * Initializes a Parser with the raw user input.
-     * Splits the input into a command word and subsequent details.
-     *
-     * @param input The full line of text entered by the user.
-     */
     public Parser(String input) {
         assert input != null : "Parser initialized with null input";
         this.input = input;
@@ -26,12 +20,6 @@ public class Parser {
         this.isOneWord = false;
     }
 
-    /**
-     * Extracts and returns the primary command word from the input.
-     * Updates the internal state to reflect if the input consists of only one word.
-     *
-     * @return The first word of the user input in string format.
-     */
     public String command() {
         assert this.inputDetails != null : "inputDetails is null when calling command()";
         String command = this.inputDetails[0];
@@ -43,77 +31,112 @@ public class Parser {
 
     /**
      * Executes the logic associated with the identified command.
-     * This method handles task creation, deletion, marking, and listing by
-     * interacting with the provided TaskList.
-     *
-     * @param taskList The TaskList object where tasks are managed.
-     * @return True if the command was recognized and executed, false otherwise.
      */
     public String execute(TaskList taskList) {
-        String command = this.command();
-        int len = taskList.get().size(); // Use actual list size for bounds checking
-        int idx;
-        Task curr;
+        String command = this.command().toLowerCase();
 
-        switch (command.toLowerCase()) {
+        switch (command) {
         case "list":
-            return taskList.list(); // Assumes list() will return a String soon
-
+            return taskList.list();
         case "mark":
-            if (this.inputDetails.length <= 1) {
-                return "Give me a number. I'm not a mind reader.";
-            }
-            idx = Integer.parseInt(this.inputDetails[1]) - 1;
-            if (idx < 0 || idx >= len) {
-                return "Ah yes, Mal.task number 'that one'. A classic. Tragically fictional";
-            }
-            return taskList.mark(idx);
-
+            return handleMark(taskList);
         case "unmark":
-            if (this.inputDetails.length <= 1) {
-                return "Unmark what? I need a number.";
-            }
-            idx = Integer.parseInt(this.inputDetails[1]) - 1;
-            if (idx < 0 || idx >= len) {
-                return "Ah yes, Mal.task number 'that one'. A classic. Tragically fictional\n";
-            }
-            return taskList.unmark(idx);
-
+            return handleUnmark(taskList);
         case "delete":
-            if (this.inputDetails.length <= 1) {
-                return "Delete what? Be specific.";
-            }
-            idx = Integer.parseInt(this.inputDetails[1]) - 1;
-            if (idx < 0 || idx >= len) {
-                return "You can't delete what was never added";
-            }
-            return taskList.delete(idx);
-
+            return handleDelete(taskList);
         case "todo":
-            if (this.inputDetails.length <= 1) return "A todo needs a description, obviously.";
-            assert this.inputDetails.length == 2 : "inputDetails expected to have 2 parts for 'todo'";
-            curr = TodoTask.taskify(this.inputDetails[1]);
-            taskList.add(curr);
-            return taskList.afterAdd();
-
+            return handleTodo(taskList);
         case "deadline":
-            if (this.inputDetails.length <= 1) return "Deadlines need a date. Don't be lazy.";
-            curr = DeadlineTask.taskify(this.inputDetails[1]);
-            taskList.add(curr);
-            return taskList.afterAdd();
-
+            return handleDeadline(taskList);
         case "event":
-            if (this.inputDetails.length <= 1) return "Events need a time frame.";
-            curr = EventTask.taskify(this.inputDetails[1]);
-            taskList.add(curr);
-            return taskList.afterAdd();
-
+            return handleEvent(taskList);
         case "find":
-            if (this.inputDetails.length <= 1) return "What am I supposed to find? Thin air?";
-            return taskList.find(this.inputDetails[1]);
-
+            return handleFind(taskList);
         default:
             return "I don't know what that means. Is that an Auradon thing?";
         }
+    }
+
+    private String handleMark(TaskList taskList) {
+        if (isMissingDetails()) {
+            return "Give me a number. I'm not a mind reader.";
+        }
+        int idx = parseIndex();
+        if (isOutOfBounds(idx, taskList)) {
+            return "Ah yes, Mal.task number 'that one'. A classic. Tragically fictional";
+        }
+        return taskList.mark(idx);
+    }
+
+    private String handleUnmark(TaskList taskList) {
+        if (isMissingDetails()) {
+            return "Unmark what? I need a number.";
+        }
+        int idx = parseIndex();
+        if (isOutOfBounds(idx, taskList)) {
+            return "Ah yes, Mal.task number 'that one'. A classic. Tragically fictional\n";
+        }
+        return taskList.unmark(idx);
+    }
+
+    private String handleDelete(TaskList taskList) {
+        if (isMissingDetails()) {
+            return "Delete what? Be specific.";
+        }
+        int idx = parseIndex();
+        if (isOutOfBounds(idx, taskList)) {
+            return "You can't delete what was never added";
+        }
+        return taskList.delete(idx);
+    }
+
+    private String handleTodo(TaskList taskList) {
+        if (isMissingDetails()) {
+            return "A todo needs a description, obviously.";
+        }
+        Task task = TodoTask.taskify(inputDetails[1]);
+        taskList.add(task);
+        return taskList.afterAdd();
+    }
+
+    private String handleDeadline(TaskList taskList) {
+        if (isMissingDetails()) {
+            return "Deadlines need a date. Don't be lazy.";
+        }
+        Task task = DeadlineTask.taskify(inputDetails[1]);
+        taskList.add(task);
+        return taskList.afterAdd();
+    }
+
+    private String handleEvent(TaskList taskList) {
+        if (isMissingDetails()) {
+            return "Events need a time frame.";
+        }
+        Task task = EventTask.taskify(inputDetails[1]);
+        taskList.add(task);
+        return taskList.afterAdd();
+    }
+
+    private String handleFind(TaskList taskList) {
+        if (isMissingDetails()) {
+            return "What am I supposed to find? Thin air?";
+        }
+        return taskList.find(inputDetails[1]);
+    }
+
+    private boolean isMissingDetails() {
+        return inputDetails.length <= 1 || inputDetails[1].trim().isEmpty();
+    }
+
+    private int parseIndex() {
+        try {
+            return Integer.parseInt(inputDetails[1]) - 1;
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
+    private boolean isOutOfBounds(int idx, TaskList taskList) {
+        return idx < 0 || idx >= taskList.get().size();
     }
 }
