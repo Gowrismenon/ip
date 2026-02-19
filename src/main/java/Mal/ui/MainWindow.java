@@ -33,7 +33,12 @@ public class MainWindow extends AnchorPane {
 
     /** Injects the Duke instance */
     public void setMal(Mal mal) {
+
         this.mal = mal;
+        String greeting = mal.getWelcomeMessage();
+        dialogContainer.getChildren().add(
+                DialogBox.getMalDialog(greeting, malImage)
+        );
     }
 
     /**

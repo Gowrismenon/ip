@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+import Mal.logic.MalException;
+
 /**
  * Represents a task that occurs over a specific time frame.
  */
@@ -27,10 +29,9 @@ public class EventTask extends Task {
         assert s != null : "Input string to taskify cannot be null";
         String[] details = s.split("/");
 
-        // Guard clause for missing delimiters
+
         if (details.length < 3) {
-            System.out.println("Right, we have something to do....but we don't know what and when?");
-            return new EventTask(details[0], "TBD", "TBD");
+            throw new MalException("insufficient details");
         }
 
         String rawStart = details[1].split(" ", 2)[1];

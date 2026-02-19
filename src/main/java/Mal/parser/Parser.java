@@ -2,6 +2,7 @@ package Mal.parser;
 
 import Mal.logic.*;
 import Mal.task.*;
+import Mal.ui.Ui;
 
 /**
  * Deciphers user input and executes the corresponding commands.
@@ -53,7 +54,9 @@ public class Parser {
         case "find":
             return handleFind(taskList);
         default:
-            return "I don't know what that means. Is that an Auradon thing?";
+
+            return "I don't know what that means. Is that an Auradon thing?"
+                    + Ui.showHelp();
         }
     }
 
@@ -94,32 +97,63 @@ public class Parser {
         if (isMissingDetails()) {
             return "A todo needs a description, obviously.";
         }
-        Task task = TodoTask.taskify(inputDetails[1]);
-        taskList.add(task);
-        return taskList.afterAdd();
+        try {
+            Task task = TodoTask.taskify(inputDetails[1]);
+            if(handleDuplicates(task.getName(), taskList)) {
+                return "My archives already contain this. Are you testing my memory?";
+
+            }
+            taskList.add(task);
+            return taskList.afterAdd();
+        } catch (MalException e) {
+            return "Details. I need details. Magic has limits.";
+        }
+
+
     }
 
     private String handleDeadline(TaskList taskList) {
         if (isMissingDetails()) {
-            return "Deadlines need a date. Don't be lazy.";
+            return "Deadline for what?" + Ui.showHelp();
         }
-        Task task = DeadlineTask.taskify(inputDetails[1]);
-        taskList.add(task);
-        return taskList.afterAdd();
+        try {
+            Task task = DeadlineTask.taskify(inputDetails[1]);
+            if(handleDuplicates(task.getName(), taskList)) {
+                return "My archives already contain this. Are you testing my memory?";
+
+            }
+            taskList.add(task);
+            return taskList.afterAdd();
+        } catch (MalException e) {
+            return "Details. I need details. Magic has limits.";
+        }
     }
 
     private String handleEvent(TaskList taskList) {
         if (isMissingDetails()) {
             return "Events need a time frame.";
         }
-        Task task = EventTask.taskify(inputDetails[1]);
-        taskList.add(task);
-        return taskList.afterAdd();
+        try {
+            Task task = EventTask.taskify(inputDetails[1]);
+            if(handleDuplicates(task.getName(), taskList)) {
+                return "My archives already contain this. Are you testing my memory?";
+
+            }
+            taskList.add(task);
+            return taskList.afterAdd();
+        } catch (MalException e) {
+            return "Details. I need details. Magic has limits.";
+        }
     }
 
     private String handleFind(TaskList taskList) {
         if (isMissingDetails()) {
-            return "What am I supposed to find? Thin air?";
+            String[] responses = {"What am I supposed to find? Thin air?"
+                    , " What exactly do you want to find? perhaps give me a name"
+                    , " Urmm find [EMPTY_SPACE]? I found it"
+                    , " Give me a name"
+            };
+            return responses[(int) Math.random() * responses.length];
         }
         return taskList.find(inputDetails[1]);
     }
@@ -138,5 +172,16 @@ public class Parser {
 
     private boolean isOutOfBounds(int idx, TaskList taskList) {
         return idx < 0 || idx >= taskList.get().size();
+    }
+
+    private boolean handleDuplicates(String name, TaskList taskList) {
+        boolean isDuplicate = false;
+        for (Task task: taskList.get()) {
+            if(task.getName().equals(name)) {
+                isDuplicate = true;
+                break;
+            }
+        }
+        return isDuplicate;
     }
 }

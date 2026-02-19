@@ -1,5 +1,8 @@
 package Mal.task;
 
+import Mal.logic.MalException;
+import Mal.ui.Ui;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -17,14 +20,12 @@ public class DeadlineTask extends Task {
         this.deadline = deadline;
     }
 
-    public static Task taskify(String s) {
+    public static Task taskify(String s) throws MalException{
         assert s != null : "Input to taskify cannot be null";
         String[] parts = s.split("/", 2);
 
-        // Error handling for missing '/by'
         if (parts.length < 2) {
-            System.out.println("Details. I need details. Magic has limits.");
-            return new DeadlineTask(parts[0], "no deadline");
+            throw new MalException("insufficient info");
         }
 
         String rawDate = parts[1].split(" ", 2)[1];

@@ -109,8 +109,9 @@ public class TaskList {
     private String getDeleteMessage(Task task) {
         if (task.isMarked()) {
             return "Right, that was inevitable\nDeleted: " + task;
+        } else {
+            return "Deleted:\n" + task + "\nLet's call that a strategic decision, hm?";
         }
-        return "Deleted:\n" + task + "\nLet's call that a strategic decision, hm?";
     }
 
     private ArrayList<Task> filterTasksByName(String name) {

@@ -13,13 +13,15 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.Node;
+import javafx.scene.shape.Ellipse;
+import javafx.scene.paint.ImagePattern;
 
 
 public class DialogBox extends HBox {
     @FXML
     private Label dialog;
     @FXML
-    private ImageView displayPicture;
+    private Ellipse displayPicture;
 
     public DialogBox(String text, Image img) {
 
@@ -32,7 +34,7 @@ public class DialogBox extends HBox {
             e.printStackTrace();
         }
         dialog.setText(text);
-        displayPicture.setImage(img);
+        displayPicture.setFill(new ImagePattern(img));
 
     }
 

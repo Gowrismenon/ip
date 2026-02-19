@@ -71,6 +71,10 @@ public class Mal {
         Parser p = new Parser(input);
         String command = p.command();
 
+        if(command.equalsIgnoreCase("hi") || command.equalsIgnoreCase("hello") || command.equalsIgnoreCase("hey")) {
+            return getResponse();
+        }
+
         if (isTerminationCommand(command)) {
             return handleExit();
         }
@@ -78,6 +82,14 @@ public class Mal {
         String response = p.execute(taskList);
         assert response != null : "Parser returned a null response";
         return response;
+    }
+
+    public String getWelcomeMessage() {
+        return ui.showWelcome();
+    }
+
+    public String getResponse() {
+        return ui.getGreeting();
     }
 
     private boolean isTerminationCommand(String command) {
@@ -88,4 +100,6 @@ public class Mal {
         storage.save(taskList.get());
         return "Bye. Hope to see you again soon... or whatever.";
     }
+
+
 }
