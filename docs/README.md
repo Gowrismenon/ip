@@ -9,7 +9,7 @@ Mal helps you track your tasks using a simple command-line-style interface insid
 ## Core features
 ### Todo tasks 
 Adds general tasks that don't have a specific tmeframe
-- **Command** : todo <description>
+- **Command** : todo (description)
 - **Example** : todo Steal Maleficient's magic sceptor
 ```
 expected output:
@@ -20,7 +20,7 @@ Now you have 1 tasks for world domination
 
 ### Deadline 
 Adds tasks that with a deadline
-- **Command** : deadline <description> /by <deadline>
+- **Command** : deadline (description) /by (deadline)
 - **Example** : deadline steal the magic wand /by coronation
 ```
 expected output:
@@ -29,19 +29,20 @@ Added:
 Now you have 2 tasks for world domination
 ```
 ### Event tracking 
-Adds tasks that have  a specific tmeframe
-- **Command** : event <description> /from <start> /to <end>
-- **Example** : event Cottilion /from today /to tmr
+Adds tasks that have  a specific timeframe
+- **Command** : event (description) /from (start) /to (end)
+- **Example** : event Cotilion /from today /to tmr
 ```
 expected output:
 Added:
-[E][ ] Cottilion (from:today to:tmr)
+[E][ ] Cotilion (from:today to:tmr)
 Now you have 3 tasks for world domination
 ```
 
 ### List 
-Lists out the tasks You have to do
+Lists out the tasks you have to do
 - **Command** : list
+
 With no tasks:
 ```
 expected output:
@@ -53,22 +54,22 @@ expected output:
 Here is the master plan, I guess:
 1. [T][ ] Steal Maleficient's magic sceptor
 2. [D][ ] steal the magic wand (by: coronation)
-3. [E][ ] Cottilion (from:today to:tmr)
+3. [E][ ] Cotilion (from:today to:tmr)
 ```
 
 ### Find
 Finds all tasks containing a specific word/name
-- **Command** : find <name>
+- **Command** : find (name)
 - **Example**: find Magic
 ```
 expected output:
-Here is what you want s:
+Here is what you want:
 1. [T][ ] Steal Maleficient's magic sceptor
 2. [D][ ] steal the magic wand (by: coronation)
 ```
 ### Mark
 Marks the task at a specific index as done 
-- **Command** : mark <index>
+- **Command** : mark (index)
 - **Example**: mark 1
 ```
 expected output:
@@ -77,7 +78,7 @@ Alright..Now we're getting somewhere!
 ```
 ### Umark
 Marks the task at a specific index as incomplete
-- **Command** : unmark <index>
+- **Command** : unmark (index)
 - **Example**: unmark 1
 ```
 expected output:
@@ -86,7 +87,7 @@ Oh boohoo, we're reopening old wounds
 ```
 ### Delete
 Deletes the task at the index from the list
-- **Command** : delete <index>
+- **Command** : delete (index)
 - **Example**: delete 1
 if the task isn't done:
 ```
