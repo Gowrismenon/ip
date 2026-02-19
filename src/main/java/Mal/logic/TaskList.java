@@ -20,11 +20,13 @@ public class TaskList {
         this.list = list;
     }
 
-    public void add(Task t) {
-        assert t != null : "Cannot add a null task to the list";
-        this.list.add(t);
+    /**
+     * Adds the task to the list
+     * @param task
+     */
+    public void add(Task task) {
+        this.list.add(task);
     }
-
     /**
      * Returns all tasks currently in the list as a formatted string.
      */
@@ -37,6 +39,11 @@ public class TaskList {
         return buildTaskString(sb, this.list);
     }
 
+    /**
+     * marks the task at index and returns a string stating the same
+     * @param idx
+     * @return A message telling the user that the task was marked, and the current state of the task
+     */
     public String mark(int idx) {
         validateIndex(idx);
         Task task = list.get(idx);
@@ -50,6 +57,11 @@ public class TaskList {
         return "Alright..Now we're getting somewhere!\n" + task.toString();
     }
 
+    /**
+     * unmarks the task at index and returns a string stating the same
+     * @param idx
+     * @return A message telling the user that the task was unmarked, and the current state of the task
+     */
     public String unmark(int idx) {
         validateIndex(idx);
         Task task = list.get(idx);
@@ -63,6 +75,11 @@ public class TaskList {
         return "Oh boohoo, we're reopening old wounds\n" + task.toString();
     }
 
+    /**
+     * deletes the task at the index
+     * @param idx
+     * @return Msg informing user of which task was deleted.
+     */
     public String delete(int idx) {
         validateIndex(idx);
         Task taskToDelete = list.get(idx);
@@ -73,6 +90,10 @@ public class TaskList {
         return response;
     }
 
+    /**
+     * Formats the string to be shown after a task is added
+     * @return Message including details of the task that was just added
+     */
     public String afterAdd() {
         assert !list.isEmpty() : "afterAdd called on an empty list";
         Task lastTask = list.get(list.size() - 1);
@@ -84,10 +105,19 @@ public class TaskList {
                 + " tasks for world domination";
     }
 
+    /**
+     * returns contents
+     * @return list of tasks
+     */
     public ArrayList<Task> get() {
         return this.list;
     }
 
+    /**
+     * finds all the tasks containing the name and returns as a String
+     * @param name
+     * @return String formatted with all the matching tasks
+     */
     public String find(String name) {
         assert name != null : "Search keyword cannot be null";
         ArrayList<Task> filteredResults = filterTasksByName(name);
@@ -100,7 +130,7 @@ public class TaskList {
         return buildTaskString(sb, filteredResults);
     }
 
-    // --- Private Helper Methods (SLAP Improvements) ---
+    //Private helper methods to avoid long methods
 
     private void validateIndex(int idx) {
         assert idx >= 0 && idx < list.size() : "Index out of bounds: " + idx;

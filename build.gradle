@@ -43,7 +43,7 @@ test {
 }
 
 application {
-    mainClass.set("Mal.logic.Mal")
+    mainClass.set("Mal.ui.Launcher")
 }
 
 shadowJar {

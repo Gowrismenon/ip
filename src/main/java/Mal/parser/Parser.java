@@ -21,6 +21,10 @@ public class Parser {
         this.isOneWord = false;
     }
 
+    /**
+     * gets the command from input
+     * @return command word
+     */
     public String command() {
         assert this.inputDetails != null : "inputDetails is null when calling command()";
         String command = this.inputDetails[0];
@@ -55,11 +59,11 @@ public class Parser {
             return handleFind(taskList);
         default:
 
-            return "I don't know what that means. Is that an Auradon thing?"
+            return "I don't know what that means. Is that an Auradon thing? "
                     + Ui.showHelp();
         }
     }
-
+// private helper methods to avoid long methods
     private String handleMark(TaskList taskList) {
         if (isMissingDetails()) {
             return "Give me a number. I'm not a mind reader.";

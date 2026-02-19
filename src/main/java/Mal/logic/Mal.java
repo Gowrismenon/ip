@@ -84,12 +84,20 @@ public class Mal {
         return response;
     }
 
+    /**
+     * Shows welcome message when the bot is opened
+     * @return Welcome message
+     */
     public String getWelcomeMessage() {
         return ui.showWelcome();
     }
 
+    /**
+     * responds to hi/hey/hello
+     * @return Response to a greeting
+     */
     public String getResponse() {
-        return ui.getGreeting();
+        return ui.respondGreeting();
     }
 
     private boolean isTerminationCommand(String command) {

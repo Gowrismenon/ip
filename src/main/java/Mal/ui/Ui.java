@@ -33,31 +33,30 @@ public class Ui {
      * @return String of user input.
      */
     public String readCommand() {
+
         return scanner.nextLine();
     }
 
-    public void showLine() {
-        System.out.println(LINE);
-    }
-
+    /**
+     * Greeting message
+     * @return String that greets users
+     */
     public String showWelcome() {
         return getMalGreeting();
     }
 
-    public void showAdded(Task task, int size) {
-        String message = "Added:\n" + task
-                + "\nNow you have " + size + " tasks for world domination";
-        printWithLines(message);
+    /**
+     * response to hi/hello/hey
+     * @return greeting
+     */
+    public String respondGreeting() {
+        return getGreeting();
     }
 
-    public void showBye() {
-        printWithLines(EXIT_MESSAGE);
-    }
-
-    public static String showError(String msg) {
-        return msg;
-    }
-
+    /**
+     * shows user the list of commands and formats
+     * @return list of commands formatted as a string
+     */
     public static String showHelp() {
         StringBuilder sb = new StringBuilder("Perhaps you meant:");
         for (String command : commands) {
@@ -65,11 +64,6 @@ public class Ui {
         }
         return sb.toString();
     }
-
-    public void showLoadingError() {
-        printWithLines("LOADING ERROR: The archives are incomplete.");
-    }
-
 
 
     /**
@@ -82,10 +76,6 @@ public class Ui {
         System.out.println(LINE);
     }
 
-    /*private String getExit() {
-
-    }*/
-
     private String getMalGreeting() {
         String[] greetings = {
                 "Well, look who decided to show up. I'm Mal. How can I be of service?",
@@ -97,7 +87,7 @@ public class Ui {
         return greetings[(int) (Math.random() * greetings.length)];
     }
 
-    public String getGreeting() {
+    private String getGreeting() {
         String[] responses = {
                 "Hi. If you're looking for trouble, you're a bit late. If you're looking to get work done, you're right on time.",
                 "Hey. Don't worry, I won't cast a spell on you for saying hi. I'm actually in a pretty good mood today.",

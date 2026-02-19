@@ -1,8 +1,10 @@
+
+
 .label {
-    -fx-background-color: linear-gradient(to bottom right, #9b7ba0, #7d5ba0);
-    -fx-border-color: #3E1F5E;
+    -fx-background-color: #DFBFE9;
+    -fx-border-color: #2E0F4E;
     -fx-border-width: 2px;
-    -fx-text-fill: #3E1F5E;
+    -fx-text-fill: #201030;
     -fx-font-weight: 800;
     -fx-padding: 10px;
     -fx-background-radius: 1em 1em 0 1em;
