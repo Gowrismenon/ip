@@ -2,7 +2,7 @@
 "Long live ~~evil~~ your productivity!
 Mal is a task management chatbot designed to keep your life from falling into total chaos. She's sassy but helpful, making sure you stay on track.
 
-##Introduction 
+## Introduction 
 Mal helps you track your tasks using a simple command-line-style interface inside a custom JavaFX GUI. Whether you're plotting world domination or just need to finish your homework, Mal has your back.
 
 
