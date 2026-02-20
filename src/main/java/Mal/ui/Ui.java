@@ -82,17 +82,17 @@ public class Ui {
                 "Alright. I'm Mal. Talk to me. What's the situation?",
                 "I'm listening. Try to make this interesting.",
                 "Oh hey, I'm Mal. What's the plan?",
-                "You’ve got my attention. Don’t waste it. I'm Mal by the way"
+                "You have got my attention. Do not waste it. I'm Mal by the way"
         };
         return greetings[(int) (Math.random() * greetings.length)];
     }
 
     private String getGreeting() {
         String[] responses = {
-                "Hi. If you're looking for trouble, you're a bit late. If you're looking to get work done, you're right on time.",
-                "Hey. Don't worry, I won't cast a spell on you for saying hi. I'm actually in a pretty good mood today.",
-                "Hi! King Ben says I need to be more 'welcoming.' So... welcome. Now, what's on the agenda?",
-                "Hello. I was just about to start on these tasks anyway. Glad you're here to help me keep track of them.",
+                "Hi. If you are looking for trouble, you are a bit late. If you are looking to get work done, you are right on time.",
+                "Hey. Do not worry, I will not cast a spell on you for saying hi. I am actually in a pretty good mood today.",
+                "Hi! King Ben says I need to be more 'welcoming.' So... welcome. Now, what is on the agenda?",
+                "Hello. I was just about to start on these tasks anyway. Glad you are here to help me keep track of them.",
                 "Hey there. You caught me between sketches. Let's knock out a few of these tasks so I can get back to my art.",
                 "Hi. I’ve got the archives ready. Just tell me what we’re tackling first and I’ll handle the rest.",
                 "Oh, hey. I was starting to think I'd have to manage this world domination plan all by myself. What's the move?"

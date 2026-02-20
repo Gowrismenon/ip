@@ -57,6 +57,8 @@ public class Parser {
             return handleEvent(taskList);
         case "find":
             return handleFind(taskList);
+        case "help":
+            return Ui.showHelp();
         default:
 
             return "I don't know what that means. Is that an Auradon thing? "
@@ -129,7 +131,8 @@ public class Parser {
             taskList.add(task);
             return taskList.afterAdd();
         } catch (MalException e) {
-            return "Details. I need details. Magic has limits.";
+            return "Details. I need details. Magic has limits. " +
+                    "If you're trying to add dates, it should be in YYYY-MM-DD format";
         }
     }
 
@@ -146,7 +149,8 @@ public class Parser {
             taskList.add(task);
             return taskList.afterAdd();
         } catch (MalException e) {
-            return "Details. I need details. Magic has limits.";
+            return "Details. I need details. Magic has limits." +
+                    "If you're trying to add dates, it should be in YYYY-MM-DD format";
         }
     }
 

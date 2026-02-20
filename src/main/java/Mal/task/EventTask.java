@@ -54,10 +54,12 @@ public class EventTask extends Task {
             throw new MalException("insufficient details");
         }
 
-        String rawStart = details[1].split(" ", 2)[1];
-        String rawEnd = details[2].split(" ", 2)[1];
-
-        return new EventTask(details[0], formatIfDate(rawStart), formatIfDate(rawEnd));
+        String[] raw1 = details[1].split(" ", 2);
+        String[] raw2 = details[2].split(" ", 2);
+        if(raw1.length < 2 || raw2.length < 2) {
+            throw new MalException("Insufficient details");
+        }
+        return new EventTask(details[0], formatIfDate(raw1[1]), formatIfDate(raw2[1]));
     }
 
     /**
