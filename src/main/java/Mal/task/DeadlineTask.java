@@ -43,12 +43,15 @@ public class DeadlineTask extends Task {
         String[] parts = s.split("/", 2);
 
         if (parts.length < 2) {
-            throw new MalException("insufficient info");
+            throw new MalException("You need to specify a deadline for this task, don't you?");
         }
 
         String[] rawDate = parts[1].split(" ", 2);
         if (rawDate.length < 2) {
             throw new MalException("You forgot the date! Format: /by [date]");
+        }
+        if(parts[0].isEmpty() || parts[0].isBlank()) {
+            throw new MalException("You forgot the description. Type help if you need the format");
         }
         return new DeadlineTask(parts[0], formatIfDate(rawDate[1]));
     }

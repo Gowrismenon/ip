@@ -132,7 +132,7 @@ public class Parser {
             return taskList.afterAdd();
         } catch (MalException e) {
             return "Details. I need details. Magic has limits. " +
-                    "If you're trying to add dates, it should be in YYYY-MM-DD format";
+                    e.getMessage();
         }
     }
 
@@ -149,8 +149,8 @@ public class Parser {
             taskList.add(task);
             return taskList.afterAdd();
         } catch (MalException e) {
-            return "Details. I need details. Magic has limits." +
-                    "If you're trying to add dates, it should be in YYYY-MM-DD format";
+            return "Details. I need details. Magic has limits. " +
+                    e.getMessage();
         }
     }
 

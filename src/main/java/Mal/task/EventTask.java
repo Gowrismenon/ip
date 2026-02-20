@@ -51,13 +51,17 @@ public class EventTask extends Task {
 
 
         if (details.length < 3) {
-            throw new MalException("insufficient details");
+            throw new MalException("Let's start with a name then go from there");
         }
 
         String[] raw1 = details[1].split(" ", 2);
         String[] raw2 = details[2].split(" ", 2);
         if(raw1.length < 2 || raw2.length < 2) {
-            throw new MalException("Insufficient details");
+            throw new MalException("Perhaps a time frame");
+        }
+
+        if(details[0].isBlank() || details[0].isEmpty()) {
+            throw new MalException("Am I magically supposed to know what this event is?");
         }
         return new EventTask(details[0], formatIfDate(raw1[1]), formatIfDate(raw2[1]));
     }
