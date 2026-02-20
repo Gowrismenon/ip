@@ -60,6 +60,23 @@ Here is the master plan, I guess:
 2. [D][ ] steal the magic wand (by: coronation)
 3. [E][ ] Cotilion (from:today to:tmr)
 ```
+### Help
+returns the list of commands and their specified commands
+- **Command** : help
+expected output:
+```
+list,
+find <name>,
+mark <index>,
+unmark <index>,
+delete <index>,
+find <index>,
+todo <taskname>,
+deadline <taskname> /<deadline>,
+event <taskname> /<start> /<end>,
+bye
+```
+
 
 ### Find
 Finds all tasks containing a specific word/name
