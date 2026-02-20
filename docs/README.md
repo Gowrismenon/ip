@@ -90,23 +90,6 @@ Oh boohoo, we're reopening old wounds
 [T][ ] Steal Maleficient's magic sceptor
 ```
 
-### Help
-returns a list of commands in their proper format 
-- **Command** : list
-```
-Perhaps you meant:
-list,
-find <name> ,
-mark <index>,
-unmark <index>,
-delete <index>,
-find <index>,
-todo <taskname>,
-deadline <taskname> /<deadline>,
-event <taskname> /<start> /<end>,
-bye
-```
-
 ### Delete
 Deletes the task at the index from the list
 - **Command** : delete (index)
