@@ -21,6 +21,7 @@ Now you have 1 tasks for world domination
 ### Deadline 
 Adds tasks that with a deadline. 
 Deadlines can be just a day/event(e.g. /by today, /by tues or /by CNY) or it can be a date in the format YYYY-MM-DD
+**troubleshooting**: If you are unable to send the message to the chatbot, you can try the formats specified above, or type 'help' for the format
 - **Command** : deadline (description) /by (deadline)
 - **Example** : deadline steal the magic wand /by coronation
 ```
@@ -32,6 +33,7 @@ Now you have 2 tasks for world domination
 ### Event tracking 
 Adds tasks that have  a specific timeframe
 Start and end times can be just a day/event(e.g. /from today /to tues) or it can be dates in the format YYYY-MM-DD
+**troubleshooting**: If you are unable to send the message to the chatbot, you can try the formats specified above, or type 'help' for the format
 - **Command** : event (description) /from (start) /to (end)
 - **Example** : event Cotilion /from today /to tmr
 ```
