@@ -19,7 +19,8 @@ Now you have 1 tasks for world domination
 ```
 
 ### Deadline 
-Adds tasks that with a deadline
+Adds tasks that with a deadline. 
+Deadlines can be just a day/event(e.g. /by today, /by tues or /by CNY) or it can be a date in the format YYYY-MM-DD
 - **Command** : deadline (description) /by (deadline)
 - **Example** : deadline steal the magic wand /by coronation
 ```
@@ -30,6 +31,7 @@ Now you have 2 tasks for world domination
 ```
 ### Event tracking 
 Adds tasks that have  a specific timeframe
+Start and end times can be just a day/event(e.g. /from today /to tues) or it can be dates in the format YYYY-MM-DD
 - **Command** : event (description) /from (start) /to (end)
 - **Example** : event Cotilion /from today /to tmr
 ```
